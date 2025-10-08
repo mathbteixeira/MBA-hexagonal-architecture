@@ -14,7 +14,7 @@ type Customer {
     cpf: String
 }
 
-type CustomerInput {
+input CustomerInput {
     name: String
     email: String
     cpf: String
