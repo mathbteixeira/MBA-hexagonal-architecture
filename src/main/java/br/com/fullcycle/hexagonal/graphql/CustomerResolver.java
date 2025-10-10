@@ -1,10 +1,12 @@
 package br.com.fullcycle.hexagonal.graphql;
 
 import br.com.fullcycle.hexagonal.application.usecases.CreateCustomerUseCase;
+import br.com.fullcycle.hexagonal.application.usecases.GetCustomerByIDUseCase;
 import br.com.fullcycle.hexagonal.dtos.CustomerDTO;
 import br.com.fullcycle.hexagonal.services.CustomerService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 // Adapter
@@ -23,7 +25,9 @@ public class CustomerResolver {
         return useCase.execute(new CreateCustomerUseCase.Input(input.getCpf(), input.getEmail(), input.getName()));
     }
 
-    public CustomerDTO customerOfId(@Argument Long id) {
-        return customerService.findById(id).map(CustomerDTO::new).orElse(null);
+    public GetCustomerByIDUseCase.Output customerOfId(@Argument Long id) {
+        final var useCase = new GetCustomerByIDUseCase(customerService);
+        return useCase.execute(new GetCustomerByIDUseCase.Input(id))
+                .orElseGet(null);
     }
 }
