@@ -22,6 +22,6 @@ public class GetPartnerByIDUseCase extends UseCase<GetPartnerByIDUseCase.Input, 
 
     public record Input(Long id) {}
 
-    public record Output(Long id, String cpf, String email, String name) {} {}
+    public record Output(Long id, String cnpj, String email, String name) {}
     
 }

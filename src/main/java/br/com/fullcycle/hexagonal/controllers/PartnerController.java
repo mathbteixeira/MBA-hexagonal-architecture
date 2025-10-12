@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+// Adapter
 @RestController
 @RequestMapping(value = "partners")
 public class PartnerController {
