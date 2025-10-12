@@ -10,6 +10,7 @@ import br.com.fullcycle.hexagonal.services.CustomerService;
 import br.com.fullcycle.hexagonal.services.PartnerService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 // Adapter
@@ -27,9 +28,10 @@ public class PartnerResolver {
         return useCase.execute(new CreatePartnerUseCase.Input(input.getCnpj(), input.getEmail(), input.getName()));
     }
 
+    @QueryMapping
     public GetPartnerByIDUseCase.Output partnerOfId(@Argument Long id) {
         final var useCase = new GetPartnerByIDUseCase(partnerService);
         return useCase.execute(new GetPartnerByIDUseCase.Input(id))
-                .orElseGet(null);
+                .orElse(null);
     }
 }
