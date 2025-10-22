@@ -5,10 +5,7 @@ import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 import br.com.fullcycle.hexagonal.application.usecases.CreateCustomerUseCase;
 import br.com.fullcycle.hexagonal.infrastructure.models.Customer;
 import br.com.fullcycle.hexagonal.infrastructure.repositories.CustomerRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,7 +18,7 @@ public class CreateCustomerUseCaseIT extends IntegrationTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @AfterEach
+    @BeforeEach
     void tearDown() {
         customerRepository.deleteAll();
     }

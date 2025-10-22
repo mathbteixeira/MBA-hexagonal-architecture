@@ -4,6 +4,7 @@ import br.com.fullcycle.hexagonal.IntegrationTest;
 import br.com.fullcycle.hexagonal.application.usecases.GetPartnerByIDUseCase;
 import br.com.fullcycle.hexagonal.infrastructure.models.Partner;
 import br.com.fullcycle.hexagonal.infrastructure.repositories.PartnerRepository;
+import br.com.fullcycle.hexagonal.infrastructure.repositories.EventRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +19,14 @@ class GetPartnerByIDUseCaseIT extends IntegrationTest {
     private GetPartnerByIDUseCase useCase;
 
     @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
     private PartnerRepository partnerRepository;
 
     @BeforeEach
     void tearDown() {
+        eventRepository.deleteAll();
         partnerRepository.deleteAll();
     }
 
@@ -49,7 +54,7 @@ class GetPartnerByIDUseCaseIT extends IntegrationTest {
 
     @Test
     @DisplayName("Deve obter vazio ao tentar recuperar um parceiro inexistente por id")
-    public void testGetByIdWithInvaidId() {
+    public void testGetByIdWithInvalidId() {
         //given
         final long expectedId = UUID.randomUUID().getMostSignificantBits();
 

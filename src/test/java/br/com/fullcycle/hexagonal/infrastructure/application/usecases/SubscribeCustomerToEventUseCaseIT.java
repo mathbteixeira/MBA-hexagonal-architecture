@@ -56,6 +56,7 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("Não deve comprar um ticket de um evento que não existe")
     public void testReserveTicketWithoutEvent() throws Exception {
         //given
@@ -73,6 +74,7 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("Não deve comprar um ticket com um cliente não existente")
     public void testReserveTicketWithoutCustomer() throws Exception {
         //given
@@ -90,6 +92,7 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("Um mesmo cliente não pode comprar mais de um ticket por evento")
     public void testReserveTicketMoreThanOnce() throws Exception {
         //given
