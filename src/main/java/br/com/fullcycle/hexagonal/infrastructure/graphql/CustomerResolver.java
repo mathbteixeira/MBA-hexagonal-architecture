@@ -30,7 +30,7 @@ public class CustomerResolver {
     }
 
     @QueryMapping
-    public GetCustomerByIDUseCase.Output customerOfId(@Argument Long id) {
+    public GetCustomerByIDUseCase.Output customerOfId(@Argument String id) {
         return getCustomerByIDUseCase.execute(new GetCustomerByIDUseCase.Input(id))
                 .orElse(null);
     }

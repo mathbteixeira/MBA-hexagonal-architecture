@@ -1,38 +1,36 @@
 package br.com.fullcycle.hexagonal.application.usecases;
 
 import br.com.fullcycle.hexagonal.application.UseCase;
+import br.com.fullcycle.hexagonal.application.entities.Customer;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
-import br.com.fullcycle.hexagonal.infrastructure.models.Customer;
-import br.com.fullcycle.hexagonal.infrastructure.services.CustomerService;
+import br.com.fullcycle.hexagonal.application.repositories.CustomerRepository;
+
+import java.util.UUID;
 
 public class CreateCustomerUseCase extends UseCase<CreateCustomerUseCase.Input, CreateCustomerUseCase.Output> {
 
-    private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
 
-    public CreateCustomerUseCase(CustomerService customerService) {
-        this.customerService = customerService;
+    public CreateCustomerUseCase(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     @Override
     public Output execute(final Input input) {
-        if (customerService.findByCpf(input.cpf).isPresent()) {
+        if (customerRepository.customerOfCpf(input.cpf).isPresent()) {
             throw new ValidationException("Customer already exists");
         }
-        if (customerService.findByEmail(input.email).isPresent()) {
+        if (customerRepository.customerOfEmail(input.email).isPresent()) {
             throw new ValidationException("Customer already exists");
         }
 
-        var customer = new Customer();
-        customer.setName(input.name);
-        customer.setCpf(input.cpf);
-        customer.setEmail(input.email);
-        customer = customerService.save(customer);
+        var customer = customerRepository.create(Customer.newCustomer(input.name, input.cpf, input.email));
 
-        return new Output(customer.getId(), customer.getCpf(), customer.getEmail(), customer.getName());
+        return new Output(customer.customerId().value(), customer.cpf(), customer.email(), customer.name());
     }
 
     public record Input(String cpf, String email, String name) {}
 
-    public record Output(Long id, String cpf, String email, String name) {}
+    public record Output(UUID id, String cpf, String email, String name) {}
 
 }
