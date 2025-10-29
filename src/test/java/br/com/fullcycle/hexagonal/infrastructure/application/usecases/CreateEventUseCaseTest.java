@@ -1,9 +1,14 @@
 package br.com.fullcycle.hexagonal.infrastructure.application.usecases;
 
+import br.com.fullcycle.hexagonal.application.InMemoryEventRepository;
+import br.com.fullcycle.hexagonal.application.InMemoryPartnerRepository;
+import br.com.fullcycle.hexagonal.application.entities.Partner;
+import br.com.fullcycle.hexagonal.application.entities.PartnerId;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
+import br.com.fullcycle.hexagonal.application.repositories.EventRepository;
+import br.com.fullcycle.hexagonal.application.repositories.PartnerRepository;
 import br.com.fullcycle.hexagonal.application.usecases.CreateEventUseCase;
 import br.com.fullcycle.hexagonal.infrastructure.models.Event;
-import br.com.fullcycle.hexagonal.infrastructure.models.Partner;
 import br.com.fullcycle.hexagonal.infrastructure.services.EventService;
 import br.com.fullcycle.hexagonal.infrastructure.services.PartnerService;
 import io.hypersistence.tsid.TSID;
@@ -24,35 +29,31 @@ class CreateEventUseCaseTest {
     @Test
     void testCreate() {
         //given
+        final var aPartner =
+                Partner.newPartner("John Doe", "41.536.538/0001-00", "john.doe@gmail.com");
         final var expectedDate = "2021-01-01";
         final var expectedName = "Disney";
         final var expectedTotalSpots = 10;
-        final var expectedPartnerId = TSID.fast().toLong();
+        final var expectedPartnerId = aPartner.partnerId().value();
 
         final var createInput =
                 new CreateEventUseCase.Input(expectedDate, expectedName, expectedPartnerId, expectedTotalSpots);
 
+        final var eventRepository = new InMemoryEventRepository();
+        final var partnerRepository = new InMemoryPartnerRepository();
+
+        partnerRepository.create(aPartner);
+
         //when
-        final var eventService = Mockito.mock(EventService.class);
-        final var partnerService = Mockito.mock(PartnerService.class);
-
-        when(eventService.save(any())).thenAnswer(a -> {
-            final var e = a.getArgument(0, Event.class);
-            e.setId(TSID.fast().toLong());
-            return e;
-        });
-
-        when(partnerService.findById(eq(expectedPartnerId))).thenReturn(Optional.of(new Partner()));
-
-        final var useCase = new CreateEventUseCase(partnerService, eventService);
+        final var useCase = new CreateEventUseCase(partnerRepository, eventRepository);
         final var output = useCase.execute(createInput);
 
         //then
         Assertions.assertNotNull(output.id());
         Assertions.assertEquals(expectedDate, output.date());
         Assertions.assertEquals(expectedName, output.name());
-        Assertions.assertEquals(expectedPartnerId, output.partnerId());
         Assertions.assertEquals(expectedTotalSpots, output.totalSpots());
+        Assertions.assertEquals(expectedPartnerId, output.partnerId());
     }
 
     @Test
@@ -62,19 +63,17 @@ class CreateEventUseCaseTest {
         final var expectedDate = "2021-01-01";
         final var expectedName = "Disney";
         final var expectedTotalSpots = 10;
-        final var expectedPartnerId = TSID.fast().toLong();
+        final var expectedPartnerId = PartnerId.unique().value();
         final var expectedError = "Partner not found";
 
         final var createInput =
                 new CreateEventUseCase.Input(expectedDate, expectedName, expectedPartnerId, expectedTotalSpots);
 
+        final var eventRepository = new InMemoryEventRepository();
+        final var partnerRepository = new InMemoryPartnerRepository();
+
         //when
-        final var eventService = Mockito.mock(EventService.class);
-        final var partnerService = Mockito.mock(PartnerService.class);
-
-        when(partnerService.findById(eq(expectedPartnerId))).thenReturn(Optional.empty());
-
-        final var useCase = new CreateEventUseCase(partnerService, eventService);
+        final var useCase = new CreateEventUseCase(partnerRepository, eventRepository);
         final var output = assertThrows(ValidationException.class, () -> useCase.execute(createInput));
 
         //then

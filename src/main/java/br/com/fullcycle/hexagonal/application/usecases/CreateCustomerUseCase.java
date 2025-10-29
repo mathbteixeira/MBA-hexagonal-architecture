@@ -5,8 +5,6 @@ import br.com.fullcycle.hexagonal.application.entities.Customer;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 import br.com.fullcycle.hexagonal.application.repositories.CustomerRepository;
 
-import java.util.UUID;
-
 public class CreateCustomerUseCase extends UseCase<CreateCustomerUseCase.Input, CreateCustomerUseCase.Output> {
 
     private final CustomerRepository customerRepository;
@@ -31,6 +29,6 @@ public class CreateCustomerUseCase extends UseCase<CreateCustomerUseCase.Input, 
 
     public record Input(String cpf, String email, String name) {}
 
-    public record Output(UUID id, String cpf, String email, String name) {}
+    public record Output(String id, String cpf, String email, String name) {}
 
 }

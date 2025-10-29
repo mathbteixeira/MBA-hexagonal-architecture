@@ -18,7 +18,7 @@ public class GetCustomerByIDUseCase extends UseCase<GetCustomerByIDUseCase.Input
     @Override
     public Optional<Output> execute(final Input input) {
         return customerRepository.customerOfId(CustomerId.with(input.id))
-                .map(c -> new Output(c.customerId().value().toString(), c.cpf().value(), c.email().value(), c.name().value()));
+                .map(c -> new Output(c.customerId().value(), c.cpf().value(), c.email().value(), c.name().value()));
     }
 
     public record Input(String id) {}

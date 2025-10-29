@@ -4,12 +4,12 @@ import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 
 public class Partner {
 
-    private PartnerId partnerId;
+    private final PartnerId partnerId;
     private Name name;
     private Cnpj cnpj;
     private Email email;
 
-    private Partner(PartnerId partnerId, String name, String cnpj, String email) {
+    private Partner(final PartnerId partnerId, final String name, final String cnpj, final String email) {
         if (partnerId == null) {
             throw new ValidationException("Invalid partnerId for partner");
         }
@@ -20,7 +20,7 @@ public class Partner {
         this.email = new Email(email);
     }
 
-    public static Partner newPartner(String name, String cnpj, String email) {
+    public static Partner newPartner(final String name, final String cnpj, final String email) {
         return new Partner(PartnerId.unique(), name, cnpj, email);
     }
 
