@@ -1,39 +1,41 @@
 package br.com.fullcycle.hexagonal.application.usecases;
 
 import br.com.fullcycle.hexagonal.application.UseCase;
+import br.com.fullcycle.hexagonal.application.entities.Partner;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
-import br.com.fullcycle.hexagonal.infrastructure.models.Partner;
-import br.com.fullcycle.hexagonal.infrastructure.services.PartnerService;
+import br.com.fullcycle.hexagonal.application.repositories.PartnerRepository;
 
 import java.util.Objects;
 
 public class CreatePartnerUseCase extends UseCase<CreatePartnerUseCase.Input, CreatePartnerUseCase.Output> {
 
-    private final PartnerService partnerService;
+    private final PartnerRepository partnerRepository;
 
-    public CreatePartnerUseCase(final PartnerService partnerService) {
-        this.partnerService = Objects.requireNonNull(partnerService);
+    public CreatePartnerUseCase(final PartnerRepository partnerRepository) {
+        this.partnerRepository = Objects.requireNonNull(partnerRepository);
     }
 
     @Override
     public CreatePartnerUseCase.Output execute(final CreatePartnerUseCase.Input input) {
-        if (partnerService.findByCnpj(input.cnpj).isPresent()) {
+        if (partnerRepository.partnerOfCnpj(input.cnpj).isPresent()) {
             throw new ValidationException("Partner already exists");
         }
-        if (partnerService.findByEmail(input.email).isPresent()) {
+        if (partnerRepository.partnerOfEmail(input.email).isPresent()) {
             throw new ValidationException("Partner already exists");
         }
 
-        var partner = new Partner();
-        partner.setName(input.name);
-        partner.setCnpj(input.cnpj);
-        partner.setEmail(input.email);
-        partner = partnerService.save(partner);
+        var partner = Partner.newPartner(input.name, input.cnpj, input.email);
+        partner = partnerRepository.create(partner);
 
-        return new CreatePartnerUseCase.Output(partner.getId(), partner.getCnpj(), partner.getEmail(), partner.getName());
+        return new CreatePartnerUseCase.Output(
+                partner.partnerId().value().toString(),
+                partner.cnpj().value(),
+                partner.email().value(),
+                partner.name().value()
+        );
     }
 
     public record Input(String cnpj, String email, String name) {}
 
-    public record Output(Long id, String cnpj, String email, String name) {}
+    public record Output(String id, String cnpj, String email, String name) {}
 }

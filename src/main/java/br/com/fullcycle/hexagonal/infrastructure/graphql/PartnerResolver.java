@@ -30,7 +30,7 @@ public class PartnerResolver {
     }
 
     @QueryMapping
-    public GetPartnerByIDUseCase.Output partnerOfId(@Argument Long id) {
+    public GetPartnerByIDUseCase.Output partnerOfId(@Argument String id) {
         return getPartnerByIDUseCase.execute(new GetPartnerByIDUseCase.Input(id))
                 .orElse(null);
     }
