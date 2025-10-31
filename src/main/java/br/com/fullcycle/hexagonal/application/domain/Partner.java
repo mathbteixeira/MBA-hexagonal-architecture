@@ -15,9 +15,9 @@ public class Partner {
         }
 
         this.partnerId = partnerId;
-        this.name = new Name(name);
-        this.cnpj = new Cnpj(cnpj);
-        this.email = new Email(email);
+        this.setName(name);
+        this.setCnpj(cnpj);
+        this.setEmail(email);
     }
 
     public static Partner newPartner(final String name, final String cnpj, final String email) {
@@ -35,5 +35,17 @@ public class Partner {
     }
     public Email email() {
         return email;
+    }
+
+    private void setCnpj(final String cnpj) {
+        this.cnpj = new Cnpj(cnpj);
+    }
+
+    private void setEmail(final String email) {
+        this.email = new Email(email);
+    }
+
+    private void setName(final String name) {
+        this.name = new Name(name);
     }
 }

@@ -38,7 +38,7 @@ class GetPartnerByIDUseCaseIT extends IntegrationTest {
         final var expectedEmail = "john.doe@gmail.com";
         final var expectedName = "John Doe";
         var partner = createPartner(expectedCNPJ, expectedEmail, expectedName);
-        final long expectedId = partner.getId();
+        final var expectedId = partner.getId().toString();
 
         final var input = new GetPartnerByIDUseCase.Input(expectedId);
 
@@ -56,7 +56,7 @@ class GetPartnerByIDUseCaseIT extends IntegrationTest {
     @DisplayName("Deve obter vazio ao tentar recuperar um parceiro inexistente por id")
     public void testGetByIdWithInvalidId() {
         //given
-        final long expectedId = UUID.randomUUID().getMostSignificantBits();
+        final var expectedId = UUID.randomUUID().toString();
 
         final var input = new GetPartnerByIDUseCase.Input(expectedId);
 

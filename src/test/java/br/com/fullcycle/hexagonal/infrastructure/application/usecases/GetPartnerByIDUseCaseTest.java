@@ -15,7 +15,7 @@ class GetPartnerByIDUseCaseTest {
     @DisplayName("Deve obter um parceiro por id")
     public void testGetById() {
         //given
-        final var expectedCNPJ = "41536538000100";
+        final var expectedCNPJ = "41.536.538/0001-00";
         final var expectedEmail = "john.doe@gmail.com";
         final var expectedName = "John Doe";
 
@@ -24,7 +24,7 @@ class GetPartnerByIDUseCaseTest {
         final var partnerRepository = new InMemoryPartnerRepository();
         partnerRepository.create(aPartner);
 
-        final var expectedId = aPartner.partnerId().value().toString();
+        final var expectedId = aPartner.partnerId().value();
         final var input = new GetPartnerByIDUseCase.Input(expectedId);
 
         //when

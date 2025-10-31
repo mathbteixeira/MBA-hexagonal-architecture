@@ -51,7 +51,7 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
     @DisplayName("Deve obter vazio ao tentar recuperar um ciente inexistente por id")
     public void testGetByIdWithInvaidId() {
         //given
-        final long expectedId = UUID.randomUUID().getMostSignificantBits();
+        final var expectedId = UUID.randomUUID().toString();
 
         final var input = new GetCustomerByIDUseCase.Input(expectedId);
 
