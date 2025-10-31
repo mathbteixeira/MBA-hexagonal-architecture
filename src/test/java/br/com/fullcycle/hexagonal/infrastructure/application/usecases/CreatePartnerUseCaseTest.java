@@ -1,7 +1,7 @@
 package br.com.fullcycle.hexagonal.infrastructure.application.usecases;
 
 import br.com.fullcycle.hexagonal.application.InMemoryPartnerRepository;
-import br.com.fullcycle.hexagonal.application.entities.Partner;
+import br.com.fullcycle.hexagonal.application.domain.Partner;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 import br.com.fullcycle.hexagonal.application.usecases.CreatePartnerUseCase;
 import org.junit.jupiter.api.Assertions;

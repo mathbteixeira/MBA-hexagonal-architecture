@@ -1,6 +1,6 @@
 package br.com.fullcycle.hexagonal.application.repositories;
-import br.com.fullcycle.hexagonal.application.entities.PartnerId;
-import br.com.fullcycle.hexagonal.application.entities.Partner;
+import br.com.fullcycle.hexagonal.application.domain.PartnerId;
+import br.com.fullcycle.hexagonal.application.domain.Partner;
 
 import java.util.Optional;
 

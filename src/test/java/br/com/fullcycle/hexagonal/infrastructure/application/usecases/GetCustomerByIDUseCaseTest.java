@@ -1,7 +1,7 @@
 package br.com.fullcycle.hexagonal.infrastructure.application.usecases;
 
 import br.com.fullcycle.hexagonal.application.InMemoryCustomerRepository;
-import br.com.fullcycle.hexagonal.application.entities.Customer;
+import br.com.fullcycle.hexagonal.application.domain.Customer;
 import br.com.fullcycle.hexagonal.application.usecases.GetCustomerByIDUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
