@@ -9,6 +9,7 @@ import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -93,7 +94,11 @@ public class Event {
         if (date == null) {
             throw new ValidationException("Invalid date for Event");
         }
-        this.date = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            this.date = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (final RuntimeException e) {
+            throw new ValidationException("Invalid date for Event", e);
+        }
     }
 
     private void setTotalSpots(final int totalSpots) {
