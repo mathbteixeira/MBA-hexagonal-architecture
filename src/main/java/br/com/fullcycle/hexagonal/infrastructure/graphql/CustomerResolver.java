@@ -1,7 +1,7 @@
 package br.com.fullcycle.hexagonal.infrastructure.graphql;
 
-import br.com.fullcycle.hexagonal.application.usecases.CreateCustomerUseCase;
-import br.com.fullcycle.hexagonal.application.usecases.GetCustomerByIDUseCase;
+import br.com.fullcycle.hexagonal.application.usecases.customer.CreateCustomerUseCase;
+import br.com.fullcycle.hexagonal.application.usecases.customer.GetCustomerByIDUseCase;
 import br.com.fullcycle.hexagonal.infrastructure.dtos.NewCustomerDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

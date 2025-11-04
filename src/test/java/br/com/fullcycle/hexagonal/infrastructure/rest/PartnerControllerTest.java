@@ -1,7 +1,7 @@
 package br.com.fullcycle.hexagonal.infrastructure.rest;
 
-import br.com.fullcycle.hexagonal.application.usecases.CreatePartnerUseCase;
-import br.com.fullcycle.hexagonal.application.usecases.GetPartnerByIDUseCase;
+import br.com.fullcycle.hexagonal.application.usecases.partner.CreatePartnerUseCase;
+import br.com.fullcycle.hexagonal.application.usecases.partner.GetPartnerByIDUseCase;
 import br.com.fullcycle.hexagonal.infrastructure.dtos.NewPartnerDTO;
 import br.com.fullcycle.hexagonal.infrastructure.repositories.EventRepository;
 import br.com.fullcycle.hexagonal.infrastructure.repositories.PartnerRepository;
