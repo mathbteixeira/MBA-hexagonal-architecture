@@ -1,6 +1,6 @@
-package br.com.fullcycle.hexagonal.infrastructure.repositories;
+package br.com.fullcycle.hexagonal.infrastructure.jpa.repositories;
 
-import br.com.fullcycle.hexagonal.infrastructure.models.Customer;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Customer;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package br.com.fullcycle.hexagonal.infrastructure.models;
+package br.com.fullcycle.hexagonal.infrastructure.jpa.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
