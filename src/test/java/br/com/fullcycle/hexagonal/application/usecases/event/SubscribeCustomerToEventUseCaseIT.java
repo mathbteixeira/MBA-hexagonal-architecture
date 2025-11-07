@@ -1,6 +1,7 @@
 package br.com.fullcycle.hexagonal.application.usecases.event;
 
 import br.com.fullcycle.hexagonal.IntegrationTest;
+import br.com.fullcycle.hexagonal.application.domain.event.ticket.TicketStatus;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.CustomerEntity;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.EventEntity;
@@ -145,8 +146,8 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
 
     private TicketEntity createTicket(final CustomerEntity customer, final EventEntity event) {
         var ticket = new TicketEntity();
-        ticket.setCustomer(customer);
-        ticket.setEvent(event);
+        ticket.setCustomerId(customer.getId());
+        ticket.setEventId(event.getId());
         ticket.setReservedAt(Instant.now());
         ticket.setPaidAt(Instant.now());
         ticket.setStatus(TicketStatus.PAID);

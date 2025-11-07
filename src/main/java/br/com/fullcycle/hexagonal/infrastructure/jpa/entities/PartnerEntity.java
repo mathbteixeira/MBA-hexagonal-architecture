@@ -1,9 +1,13 @@
 package br.com.fullcycle.hexagonal.infrastructure.jpa.entities;
 
+import br.com.fullcycle.hexagonal.application.domain.partner.Partner;
+import br.com.fullcycle.hexagonal.application.domain.partner.PartnerId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -13,7 +17,7 @@ public class PartnerEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -24,18 +28,32 @@ public class PartnerEntity {
     public PartnerEntity() {
     }
 
-    public PartnerEntity(Long id, String name, String cnpj, String email) {
+    public PartnerEntity(UUID id, String name, String cnpj, String email) {
         this.id = id;
         this.name = name;
         this.cnpj = cnpj;
         this.email = email;
     }
 
-    public Long getId() {
+    public static PartnerEntity of(Partner partner) {
+        return new  PartnerEntity(
+                UUID.fromString(partner.partnerId().value()),
+                partner.name().value(),
+                partner.cnpj().value(),
+                partner.email().value()
+        );
+    }
+
+    public Partner toPartner() {
+        return new Partner(PartnerId.with(this.id.toString()),
+                this.name, this.cnpj, this.email);
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

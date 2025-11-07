@@ -1,11 +1,14 @@
 package br.com.fullcycle.hexagonal.infrastructure.jpa.entities;
 
+import br.com.fullcycle.hexagonal.application.domain.customer.Customer;
+import br.com.fullcycle.hexagonal.application.domain.customer.CustomerId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.*;
 
@@ -15,7 +18,7 @@ public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -26,18 +29,35 @@ public class CustomerEntity {
     public CustomerEntity() {
     }
 
-    public CustomerEntity(Long id, String name, String cpf, String email) {
+    public CustomerEntity(UUID id, String name, String cpf, String email) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
         this.email = email;
     }
 
-    public Long getId() {
+    public static CustomerEntity of(final Customer customer) {
+        return new CustomerEntity(
+                java.util.UUID.fromString(customer.customerId().value()),
+                customer.name().value(),
+                customer.cpf().value(),
+                customer.email().value());
+    }
+
+    public Customer toCustomer() {
+        return new Customer(
+                CustomerId.with(this.id.toString()),
+                this.name,
+                this.cpf,
+                this.email
+        );
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -32,7 +32,7 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
         final var expectedEmail = "john.doe@gmail.com";
         final var expectedName = "John Doe";
         var customer = createCustomer(expectedCPF, expectedEmail, expectedName);
-        final long expectedId = customer.getId();
+        final var expectedId = customer.getId();
 
         final var input = new GetCustomerByIDUseCase.Input(String.valueOf(expectedId));
 

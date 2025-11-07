@@ -14,7 +14,7 @@ public class Customer {
     private Cpf cpf;
     private Email email;
 
-    private Customer(final CustomerId customerId, final String name, final String cpf, final String email) {
+    public Customer(final CustomerId customerId, final String name, final String cpf, final String email) {
         if (customerId == null) {
             throw new ValidationException("Invalid customerId for customer");
         }

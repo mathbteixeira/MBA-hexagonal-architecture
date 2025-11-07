@@ -1,5 +1,6 @@
 package br.com.fullcycle.hexagonal.application.usecases.event;
 
+import br.com.fullcycle.hexagonal.application.domain.event.ticket.TicketStatus;
 import br.com.fullcycle.hexagonal.application.repository.InMemoryCustomerRepository;
 import br.com.fullcycle.hexagonal.application.repository.InMemoryEventRepository;
 import br.com.fullcycle.hexagonal.application.repository.InMemoryTicketRepository;

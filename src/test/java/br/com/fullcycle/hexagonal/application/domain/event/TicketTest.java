@@ -2,6 +2,7 @@ package br.com.fullcycle.hexagonal.application.domain.event;
 
 import br.com.fullcycle.hexagonal.application.domain.customer.Customer;
 import br.com.fullcycle.hexagonal.application.domain.event.ticket.Ticket;
+import br.com.fullcycle.hexagonal.application.domain.event.ticket.TicketStatus;
 import br.com.fullcycle.hexagonal.application.domain.partner.Partner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

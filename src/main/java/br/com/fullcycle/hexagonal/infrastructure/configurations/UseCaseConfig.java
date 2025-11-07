@@ -1,14 +1,15 @@
 package br.com.fullcycle.hexagonal.infrastructure.configurations;
 
+import br.com.fullcycle.hexagonal.application.repositories.CustomerRepository;
+import br.com.fullcycle.hexagonal.application.repositories.EventRepository;
+import br.com.fullcycle.hexagonal.application.repositories.PartnerRepository;
+import br.com.fullcycle.hexagonal.application.repositories.TicketRepository;
 import br.com.fullcycle.hexagonal.application.usecases.customer.CreateCustomerUseCase;
 import br.com.fullcycle.hexagonal.application.usecases.customer.GetCustomerByIDUseCase;
 import br.com.fullcycle.hexagonal.application.usecases.event.CreateEventUseCase;
 import br.com.fullcycle.hexagonal.application.usecases.partner.CreatePartnerUseCase;
 import br.com.fullcycle.hexagonal.application.usecases.partner.GetPartnerByIDUseCase;
 import br.com.fullcycle.hexagonal.application.usecases.event.SubscribeCustomerToEventUseCase;
-import br.com.fullcycle.hexagonal.infrastructure.services.CustomerService;
-import br.com.fullcycle.hexagonal.infrastructure.services.EventService;
-import br.com.fullcycle.hexagonal.infrastructure.services.PartnerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,15 +18,19 @@ import java.util.Objects;
 @Configuration
 public class UseCaseConfig {
 
-    private final CustomerService customerService;
-    private final PartnerService partnerService;
-    private final EventService eventService;
+    private final CustomerRepository customerRepository;
+    private final EventRepository eventRepository;
+    private final PartnerRepository partnerRepository;
+    private final TicketRepository ticketRepository;
 
-    public UseCaseConfig(CustomerService customerService, PartnerService partnerService,
-                         EventService eventService) {
-        this.customerService = Objects.requireNonNull(customerService);
-        this.partnerService = Objects.requireNonNull(partnerService);
-        this.eventService = Objects.requireNonNull(eventService);
+    public UseCaseConfig(final CustomerRepository customerRepository,
+                         final EventRepository eventRepository,
+                         final PartnerRepository partnerRepository,
+                         final TicketRepository ticketRepository) {
+        this.customerRepository = Objects.requireNonNull(customerRepository);
+        this.eventRepository = Objects.requireNonNull(eventRepository);
+        this.partnerRepository = Objects.requireNonNull(partnerRepository);
+        this.ticketRepository = Objects.requireNonNull(ticketRepository);
     }
 
     @Bean

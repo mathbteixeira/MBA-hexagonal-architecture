@@ -14,7 +14,7 @@ public class Partner {
     private Cnpj cnpj;
     private Email email;
 
-    private Partner(final PartnerId partnerId, final String name, final String cnpj, final String email) {
+    public Partner(final PartnerId partnerId, final String name, final String cnpj, final String email) {
         if (partnerId == null) {
             throw new ValidationException("Invalid partnerId for partner");
         }

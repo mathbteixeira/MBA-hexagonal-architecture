@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -15,7 +16,7 @@ public class EventEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -33,7 +34,7 @@ public class EventEntity {
         this.tickets = new HashSet<>();
     }
 
-    public EventEntity(Long id, String name, LocalDate date, int totalSpots, Set<TicketEntity> tickets) {
+    public EventEntity(UUID id, String name, LocalDate date, int totalSpots, Set<TicketEntity> tickets) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -41,11 +42,11 @@ public class EventEntity {
         this.tickets = tickets != null ? tickets : new HashSet<>();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
