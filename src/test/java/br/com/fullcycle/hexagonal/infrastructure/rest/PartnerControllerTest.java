@@ -3,8 +3,8 @@ package br.com.fullcycle.hexagonal.infrastructure.rest;
 import br.com.fullcycle.hexagonal.application.usecases.partner.CreatePartnerUseCase;
 import br.com.fullcycle.hexagonal.application.usecases.partner.GetPartnerByIDUseCase;
 import br.com.fullcycle.hexagonal.infrastructure.dtos.NewPartnerDTO;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerJpaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +28,15 @@ public class PartnerControllerTest {
     private ObjectMapper mapper;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventJpaRepository eventJpaRepository;
 
     @Autowired
-    private PartnerRepository partnerRepository;
+    private PartnerJpaRepository partnerJpaRepository;
 
     @BeforeEach
     void tearDown() {
-        eventRepository.deleteAll();
-        partnerRepository.deleteAll();
+        eventJpaRepository.deleteAll();
+        partnerJpaRepository.deleteAll();
     }
 
     @Test

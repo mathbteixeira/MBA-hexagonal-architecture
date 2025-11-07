@@ -5,9 +5,9 @@ import br.com.fullcycle.hexagonal.infrastructure.dtos.NewEventDTO;
 import br.com.fullcycle.hexagonal.infrastructure.dtos.SubscribeDTO;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Customer;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Partner;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerJpaRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerJpaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,28 +32,28 @@ class EventControllerTest {
     private ObjectMapper mapper;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerJpaRepository customerJpaRepository;
 
     @Autowired
-    private PartnerRepository partnerRepository;
+    private PartnerJpaRepository partnerJpaRepository;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventJpaRepository eventJpaRepository;
 
     private Customer johnDoe;
     private Partner disney;
 
     @BeforeEach
     void setUp() {
-        johnDoe = customerRepository.save(new Customer(null, "John Doe", "123", "john@gmail.com"));
-        disney = partnerRepository.save(new Partner(null, "Disney", "456", "disney@gmail.com"));
+        johnDoe = customerJpaRepository.save(new Customer(null, "John Doe", "123", "john@gmail.com"));
+        disney = partnerJpaRepository.save(new Partner(null, "Disney", "456", "disney@gmail.com"));
     }
 
     @BeforeEach
     void tearDown() {
-        eventRepository.deleteAll();
-        customerRepository.deleteAll();
-        partnerRepository.deleteAll();
+        eventJpaRepository.deleteAll();
+        customerJpaRepository.deleteAll();
+        partnerJpaRepository.deleteAll();
     }
 
     @Test
@@ -105,7 +105,7 @@ class EventControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsByteArray();
 
-        var actualEvent = eventRepository.findById(Long.parseLong(eventId)).get();
+        var actualEvent = eventJpaRepository.findById(Long.parseLong(eventId)).get();
         Assertions.assertEquals(1, actualEvent.getTickets().size());
     }
 }

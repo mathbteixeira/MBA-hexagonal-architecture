@@ -6,9 +6,9 @@ import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Customer;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Event;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Ticket;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.TicketStatus;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.TicketRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerJpaRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.TicketJpaRepository;
 import io.hypersistence.tsid.TSID;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
@@ -26,13 +26,13 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     private SubscribeCustomerToEventUseCase useCase;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerJpaRepository customerJpaRepository;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventJpaRepository eventJpaRepository;
 
     @Autowired
-    private TicketRepository ticketRepository;
+    private TicketJpaRepository ticketJpaRepository;
 
     @Test
     @Transactional
@@ -133,7 +133,7 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
         aCustomer.setEmail(email);
         aCustomer.setName(name);
 
-        return customerRepository.save(aCustomer);
+        return customerJpaRepository.save(aCustomer);
     }
 
     private Event createEvent(final String name, final int totalSpots) {
@@ -141,7 +141,7 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
         anEvent.setName(name);
         anEvent.setTotalSpots(totalSpots);
 
-        return eventRepository.save(anEvent);
+        return eventJpaRepository.save(anEvent);
     }
 
     private Ticket createTicket(final Customer customer, final Event event) {
@@ -152,6 +152,6 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
         ticket.setPaidAt(Instant.now());
         ticket.setStatus(TicketStatus.PAID);
 
-        return ticketRepository.save(ticket);
+        return ticketJpaRepository.save(ticket);
     }
 }

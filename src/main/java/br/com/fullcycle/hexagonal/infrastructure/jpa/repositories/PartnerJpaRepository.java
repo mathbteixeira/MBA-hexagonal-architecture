@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface PartnerRepository extends CrudRepository<Partner, Long> {
+public interface PartnerJpaRepository extends CrudRepository<Partner, Long> {
 
     Optional<Partner> findByCnpj(String cnpj);
 

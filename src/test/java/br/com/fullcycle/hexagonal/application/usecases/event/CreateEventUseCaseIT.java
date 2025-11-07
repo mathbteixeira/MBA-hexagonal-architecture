@@ -4,8 +4,8 @@ import br.com.fullcycle.hexagonal.IntegrationTest;
 import br.com.fullcycle.hexagonal.application.domain.partner.PartnerId;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Partner;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerJpaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,15 +20,15 @@ class CreateEventUseCaseIT extends IntegrationTest {
     private CreateEventUseCase useCase;
 
     @Autowired
-    private PartnerRepository partnerRepository;
+    private PartnerJpaRepository partnerJpaRepository;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventJpaRepository eventJpaRepository;
 
     @BeforeEach
     void tearDown() {
-        eventRepository.deleteAll();
-        partnerRepository.deleteAll();
+        eventJpaRepository.deleteAll();
+        partnerJpaRepository.deleteAll();
     }
 
     @Test
@@ -79,6 +79,6 @@ class CreateEventUseCaseIT extends IntegrationTest {
         aPartner.setCnpj(cnpj);
         aPartner.setEmail(email);
         aPartner.setName(name);
-        return partnerRepository.save(aPartner);
+        return partnerJpaRepository.save(aPartner);
     }
 }
