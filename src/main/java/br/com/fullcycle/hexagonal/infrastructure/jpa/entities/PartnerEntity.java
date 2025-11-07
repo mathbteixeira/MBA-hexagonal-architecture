@@ -9,7 +9,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "partners")
-public class Partner {
+public class PartnerEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -21,10 +21,10 @@ public class Partner {
 
     private String email;
 
-    public Partner() {
+    public PartnerEntity() {
     }
 
-    public Partner(Long id, String name, String cnpj, String email) {
+    public PartnerEntity(Long id, String name, String cnpj, String email) {
         this.id = id;
         this.name = name;
         this.cnpj = cnpj;

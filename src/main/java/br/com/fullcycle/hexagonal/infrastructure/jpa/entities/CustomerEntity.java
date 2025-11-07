@@ -11,7 +11,7 @@ import static jakarta.persistence.GenerationType.*;
 
 @Entity
 @Table(name = "customers")
-public class Customer {
+public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -23,10 +23,10 @@ public class Customer {
 
     private String email;
 
-    public Customer() {
+    public CustomerEntity() {
     }
 
-    public Customer(Long id, String name, String cpf, String email) {
+    public CustomerEntity(Long id, String name, String cpf, String email) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
@@ -69,7 +69,7 @@ public class Customer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
+        CustomerEntity customer = (CustomerEntity) o;
         return Objects.equals(id, customer.id);
     }
 

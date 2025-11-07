@@ -2,10 +2,9 @@ package br.com.fullcycle.hexagonal.application.usecases.event;
 
 import br.com.fullcycle.hexagonal.IntegrationTest;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Customer;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Event;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Ticket;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.TicketStatus;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.CustomerEntity;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.EventEntity;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.TicketEntity;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerJpaRepository;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.TicketJpaRepository;
@@ -127,8 +126,8 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
         Assertions.assertEquals(expectedError, actualException.getMessage());
     }
 
-    private Customer createCustomer(final String cpf, final String email, final String name) {
-        final var aCustomer = new Customer();
+    private CustomerEntity createCustomer(final String cpf, final String email, final String name) {
+        final var aCustomer = new CustomerEntity();
         aCustomer.setCpf(cpf);
         aCustomer.setEmail(email);
         aCustomer.setName(name);
@@ -136,16 +135,16 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
         return customerJpaRepository.save(aCustomer);
     }
 
-    private Event createEvent(final String name, final int totalSpots) {
-        final var anEvent = new Event();
+    private EventEntity createEvent(final String name, final int totalSpots) {
+        final var anEvent = new EventEntity();
         anEvent.setName(name);
         anEvent.setTotalSpots(totalSpots);
 
         return eventJpaRepository.save(anEvent);
     }
 
-    private Ticket createTicket(final Customer customer, final Event event) {
-        var ticket = new Ticket();
+    private TicketEntity createTicket(final CustomerEntity customer, final EventEntity event) {
+        var ticket = new TicketEntity();
         ticket.setCustomer(customer);
         ticket.setEvent(event);
         ticket.setReservedAt(Instant.now());

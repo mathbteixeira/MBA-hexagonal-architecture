@@ -1,7 +1,7 @@
 package br.com.fullcycle.hexagonal.application.usecases.customer;
 
 import br.com.fullcycle.hexagonal.IntegrationTest;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Customer;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.CustomerEntity;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerJpaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,8 +61,8 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
         Assertions.assertTrue(output.isEmpty());
     }
 
-    private Customer createCustomer(final String cpf, final String email, final String name) {
-        final var aCustomer = new Customer();
+    private CustomerEntity createCustomer(final String cpf, final String email, final String name) {
+        final var aCustomer = new CustomerEntity();
         aCustomer.setCpf(cpf);
         aCustomer.setEmail(email);
         aCustomer.setName(name);

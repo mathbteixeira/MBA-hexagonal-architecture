@@ -1,13 +1,13 @@
 package br.com.fullcycle.hexagonal.infrastructure.jpa.repositories;
 
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Partner;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.PartnerEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface PartnerJpaRepository extends CrudRepository<Partner, Long> {
+public interface PartnerJpaRepository extends CrudRepository<PartnerEntity, Long> {
 
-    Optional<Partner> findByCnpj(String cnpj);
+    Optional<PartnerEntity> findByCnpj(String cnpj);
 
-    Optional<Partner> findByEmail(String email);
+    Optional<PartnerEntity> findByEmail(String email);
 }

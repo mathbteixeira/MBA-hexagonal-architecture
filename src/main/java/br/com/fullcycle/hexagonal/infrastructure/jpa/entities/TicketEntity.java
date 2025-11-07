@@ -1,5 +1,6 @@
 package br.com.fullcycle.hexagonal.infrastructure.jpa.entities;
 
+import br.com.fullcycle.hexagonal.application.domain.event.ticket.TicketStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -9,17 +10,17 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "tickets")
-public class Ticket {
+public class TicketEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Customer customer;
+    private CustomerEntity customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Event event;
+    private EventEntity event;
 
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
@@ -28,10 +29,10 @@ public class Ticket {
 
     private Instant reservedAt;
 
-    public Ticket() {
+    public TicketEntity() {
     }
 
-    public Ticket(Long id, Customer customer, Event event, TicketStatus status, Instant paidAt, Instant reservedAt) {
+    public TicketEntity(Long id, CustomerEntity customer, EventEntity event, TicketStatus status, Instant paidAt, Instant reservedAt) {
         this.id = id;
         this.customer = customer;
         this.event = event;
@@ -48,19 +49,19 @@ public class Ticket {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public CustomerEntity getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
     }
 
-    public Event getEvent() {
+    public EventEntity getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
+    public void setEvent(EventEntity event) {
         this.event = event;
     }
 
@@ -92,7 +93,7 @@ public class Ticket {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Ticket ticket = (Ticket) o;
+        TicketEntity ticket = (TicketEntity) o;
         return Objects.equals(customer, ticket.customer) && Objects.equals(event, ticket.event);
     }
 

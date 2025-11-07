@@ -2,7 +2,7 @@ package br.com.fullcycle.hexagonal.application.usecases.partner;
 
 import br.com.fullcycle.hexagonal.IntegrationTest;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.Partner;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.PartnerEntity;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.PartnerJpaRepository;
 import org.junit.jupiter.api.Assertions;
@@ -90,8 +90,8 @@ public class CreatePartnerUseCaseIT extends IntegrationTest {
         Assertions.assertEquals(expectedError, actualException.getMessage());
     }
 
-    private Partner createPartner(final String cnpj, final String email, final String name) {
-        final Partner aPartner = new Partner();
+    private PartnerEntity createPartner(final String cnpj, final String email, final String name) {
+        final PartnerEntity aPartner = new PartnerEntity();
         aPartner.setCnpj(cnpj);
         aPartner.setEmail(email);
         aPartner.setName(name);
