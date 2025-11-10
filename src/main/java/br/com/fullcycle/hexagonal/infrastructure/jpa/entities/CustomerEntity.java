@@ -12,12 +12,11 @@ import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.*;
 
-@Entity
+@Entity(name = "Customer")
 @Table(name = "customers")
 public class CustomerEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
     private UUID id;
 
     private String name;

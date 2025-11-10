@@ -35,37 +35,31 @@ public class UseCaseConfig {
 
     @Bean
     public CreateCustomerUseCase createCustomerUseCase() {
-        // TODO: fix dependency
-        return new CreateCustomerUseCase(null);
+        return new CreateCustomerUseCase(customerRepository);
     }
 
     @Bean
     public CreateEventUseCase createEventUseCase() {
-        // TODO: fix dependency
-        return new CreateEventUseCase(null, null);
+        return new CreateEventUseCase(partnerRepository, eventRepository);
     }
 
     @Bean
     public CreatePartnerUseCase createPartnerUseCase() {
-        // TODO: fix dependency
-        return new CreatePartnerUseCase(null);
+        return new CreatePartnerUseCase(partnerRepository);
     }
 
     @Bean
     public GetCustomerByIDUseCase getCustomerUseCase() {
-        // TODO: fix dependency
-        return new GetCustomerByIDUseCase(null);
+        return new GetCustomerByIDUseCase(customerRepository);
     }
 
     @Bean
     public GetPartnerByIDUseCase getPartnerUseCase() {
-        // TODO: fix dependency
-        return new GetPartnerByIDUseCase(null);
+        return new GetPartnerByIDUseCase(partnerRepository);
     }
 
     @Bean
     public SubscribeCustomerToEventUseCase subscribeCustomerToEventUseCase() {
-        // TODO: fix dependency
-        return new SubscribeCustomerToEventUseCase(null, null, null);
+        return new SubscribeCustomerToEventUseCase(customerRepository, eventRepository, ticketRepository);
     }
 }

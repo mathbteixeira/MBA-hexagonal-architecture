@@ -1,22 +1,24 @@
 package br.com.fullcycle.hexagonal.application.usecases.event;
 
 import br.com.fullcycle.hexagonal.IntegrationTest;
+import br.com.fullcycle.hexagonal.application.domain.customer.Customer;
+import br.com.fullcycle.hexagonal.application.domain.event.Event;
+import br.com.fullcycle.hexagonal.application.domain.event.ticket.Ticket;
 import br.com.fullcycle.hexagonal.application.domain.event.ticket.TicketStatus;
+import br.com.fullcycle.hexagonal.application.domain.partner.Partner;
 import br.com.fullcycle.hexagonal.application.exceptions.ValidationException;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.CustomerEntity;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.EventEntity;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.TicketEntity;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerJpaRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.TicketJpaRepository;
-import io.hypersistence.tsid.TSID;
+import br.com.fullcycle.hexagonal.application.repositories.CustomerRepository;
+import br.com.fullcycle.hexagonal.application.repositories.EventRepository;
+import br.com.fullcycle.hexagonal.application.repositories.PartnerRepository;
+import br.com.fullcycle.hexagonal.application.repositories.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -26,24 +28,28 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     private SubscribeCustomerToEventUseCase useCase;
 
     @Autowired
-    private CustomerJpaRepository customerJpaRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
-    private EventJpaRepository eventJpaRepository;
+    private EventRepository eventRepository;
 
     @Autowired
-    private TicketJpaRepository ticketJpaRepository;
+    private TicketRepository ticketRepository;
+
+    @Autowired
+    private PartnerRepository partnerRepository;
 
     @Test
     @Transactional
     @DisplayName("Deve comprar um ticket de um evento")
     public void testReserveTicket() throws Exception {
         //given
-        var customer = createCustomer("12345678901", "john.doe@gmail.com", "John Doe");
-        var event = createEvent("Disney", 10);
-        var eventId = event.getId().toString();
+        var customer = createCustomer("123.456.789-01", "john.doe@gmail.com", "John Doe");
+        var partner = createPartner("41.123.123/0001-00","Disney","disney@gmail.com");
+        var event = createEvent("Disney", 10, partner);
+        var eventId = event.eventId().value();
 
-        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(eventId, customer.getId().toString());
+        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(eventId, customer.customerId().value());
 
         //when
         final var output = useCase.execute(subscribeInput);
@@ -60,10 +66,10 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     public void testReserveTicketWithoutEvent() throws Exception {
         //given
         final var expectedError = "Event not found";
-        var customer = createCustomer("12345678901", "john.doe@gmail.com", "John Doe");
-        var eventId = TSID.fast().toString();
+        var customer = createCustomer("123.456.789-01", "john.doe@gmail.com", "John Doe");
+        var eventId = UUID.randomUUID().toString();
 
-        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(eventId, customer.getId().toString());
+        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(eventId, customer.customerId().value());
 
         //when
         final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
@@ -78,8 +84,8 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     public void testReserveTicketWithoutCustomer() throws Exception {
         //given
         final var expectedError = "Customer not found";
-        var customerId = TSID.fast().toString();
-        var eventId = TSID.fast().toString();
+        var customerId = UUID.randomUUID().toString();
+        var eventId = UUID.randomUUID().toString();
 
         final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(eventId, customerId);
 
@@ -96,11 +102,13 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
     public void testReserveTicketMoreThanOnce() throws Exception {
         //given
         final var expectedError = "Email already registered";
-        var customer = createCustomer("12345678901", "john.doe@gmail.com", "John Doe");
-        var event = createEvent("Disney", 10);
+        var customer = createCustomer("123.456.789-01", "john.doe@gmail.com", "John Doe");
+        var partner = createPartner("41.123.123/0001-00","Disney","disney@gmail.com");
+        var event = createEvent("Disney", 10, partner);
         createTicket(customer, event);
 
-        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(event.getId().toString(), customer.getId().toString());
+        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(event.eventId().value(), customer.customerId().value());
+        useCase.execute(subscribeInput);
 
         //when
         final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
@@ -111,47 +119,42 @@ class SubscribeCustomerToEventUseCaseIT extends IntegrationTest {
 
     @Test
     @Transactional
-    @DisplayName("Um mesmo cliente não pode comprar de um evento que não há mais cadeiras")
+    @DisplayName("Um cliente não pode comprar de um evento que não há mais cadeiras")
     public void testReserveTicketWithoutSlots() throws Exception {
         //given
         final var expectedError = "Event sold out";
-        var customer = createCustomer("12345678901", "john.doe@gmail.com", "John Doe");
-        var event = createEvent("Disney", 0);
+        var customer = createCustomer("123.456.789-01", "john.doe@gmail.com", "John Doe");
+        var partner = createPartner("41.123.123/0001-00","Disney","disney@gmail.com");
+        var event = createEvent("Disney", 1, partner);
 
-        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(event.getId().toString(), customer.getId().toString());
+        final var subscribeInput = new SubscribeCustomerToEventUseCase.Input(event.eventId().value(), customer.customerId().value());
+
+        useCase.execute(subscribeInput);
+
+        var customer2 = createCustomer("123.456.789-02", "john.doe2@gmail.com", "John Doe2");
+
+        final var subscribeInput2 = new SubscribeCustomerToEventUseCase.Input(event.eventId().value(), customer2.customerId().value());
 
         //when
-        final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
+        final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput2));
 
         //then
         Assertions.assertEquals(expectedError, actualException.getMessage());
     }
 
-    private CustomerEntity createCustomer(final String cpf, final String email, final String name) {
-        final var aCustomer = new CustomerEntity();
-        aCustomer.setCpf(cpf);
-        aCustomer.setEmail(email);
-        aCustomer.setName(name);
-
-        return customerJpaRepository.save(aCustomer);
+    private Customer createCustomer(final String cpf, final String email, final String name) {
+        return customerRepository.create(Customer.newCustomer(name, cpf, email));
     }
 
-    private EventEntity createEvent(final String name, final int totalSpots) {
-        final var anEvent = new EventEntity();
-        anEvent.setName(name);
-        anEvent.setTotalSpots(totalSpots);
-
-        return eventJpaRepository.save(anEvent);
+    private Event createEvent(final String name, final int totalSpots, final Partner partner) {
+        return eventRepository.create(Event.newEvent(name, LocalDate.now().toString(), totalSpots, partner));
     }
 
-    private TicketEntity createTicket(final CustomerEntity customer, final EventEntity event) {
-        var ticket = new TicketEntity();
-        ticket.setCustomerId(customer.getId());
-        ticket.setEventId(event.getId());
-        ticket.setReservedAt(Instant.now());
-        ticket.setPaidAt(Instant.now());
-        ticket.setStatus(TicketStatus.PAID);
+    private Ticket createTicket(final Customer customer, final Event event) {
+        return ticketRepository.create(Ticket.newTicket(customer.customerId(), event.eventId()));
+    }
 
-        return ticketJpaRepository.save(ticket);
+    private Partner createPartner(final String cnpj, final String name, final String email) {
+        return partnerRepository.create(Partner.newPartner(name, cnpj, email));
     }
 }

@@ -34,7 +34,7 @@ public class PartnerTest {
         //when
         final var actualError = Assertions.assertThrows(
                 ValidationException.class,
-                () -> Partner.newPartner("John Doe", "41536.538/0001-00", "john.doe@gmail.com"));
+                () -> Partner.newPartner("John Doe", "41536538000100", "john.doe@gmail.com"));
 
         //then
         Assertions.assertEquals(expectedError, actualError.getMessage());

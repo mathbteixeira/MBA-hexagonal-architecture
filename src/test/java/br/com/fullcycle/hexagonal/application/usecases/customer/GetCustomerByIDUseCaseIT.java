@@ -1,8 +1,8 @@
 package br.com.fullcycle.hexagonal.application.usecases.customer;
 
 import br.com.fullcycle.hexagonal.IntegrationTest;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.CustomerEntity;
-import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.CustomerJpaRepository;
+import br.com.fullcycle.hexagonal.application.domain.customer.Customer;
+import br.com.fullcycle.hexagonal.application.repositories.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,22 +17,22 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
     private GetCustomerByIDUseCase useCase;
 
     @Autowired
-    private CustomerJpaRepository customerJpaRepository;
+    private CustomerRepository customerRepository;
 
     @BeforeEach
     void tearDown() {
-        customerJpaRepository.deleteAll();
+        customerRepository.deleteAll();
     }
 
     @Test
     @DisplayName("Deve obter um cliente por id")
     public void testGetById() {
         //given
-        final var expectedCPF = "12345678901";
+        final var expectedCPF = "123.456.789-01";
         final var expectedEmail = "john.doe@gmail.com";
         final var expectedName = "John Doe";
         var customer = createCustomer(expectedCPF, expectedEmail, expectedName);
-        final var expectedId = customer.getId();
+        final var expectedId = customer.customerId().value();
 
         final var input = new GetCustomerByIDUseCase.Input(String.valueOf(expectedId));
 
@@ -61,12 +61,7 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
         Assertions.assertTrue(output.isEmpty());
     }
 
-    private CustomerEntity createCustomer(final String cpf, final String email, final String name) {
-        final var aCustomer = new CustomerEntity();
-        aCustomer.setCpf(cpf);
-        aCustomer.setEmail(email);
-        aCustomer.setName(name);
-
-        return customerJpaRepository.save(aCustomer);
+    private Customer createCustomer(final String cpf, final String email, final String name) {
+        return customerRepository.create(Customer.newCustomer(name, cpf, email));
     }
 }

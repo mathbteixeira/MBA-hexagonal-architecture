@@ -34,7 +34,7 @@ public class CustomerTest {
         //when
         final var actualError = Assertions.assertThrows(
                 ValidationException.class,
-                () -> Customer.newCustomer("John Doe", "123456.789-01", "john.doe@gmail.com"));
+                () -> Customer.newCustomer("John Doe", "12345678901", "john.doe@gmail.com"));
 
         //then
         Assertions.assertEquals(expectedError, actualError.getMessage());
