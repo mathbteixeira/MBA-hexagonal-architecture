@@ -1,8 +1,11 @@
 package br.com.fullcycle.hexagonal.infrastructure.repositories;
 
+import br.com.fullcycle.hexagonal.application.domain.customer.Customer;
+import br.com.fullcycle.hexagonal.application.domain.customer.CustomerId;
 import br.com.fullcycle.hexagonal.application.domain.event.Event;
 import br.com.fullcycle.hexagonal.application.domain.event.EventId;
 import br.com.fullcycle.hexagonal.application.repositories.EventRepository;
+import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.CustomerEntity;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.entities.EventEntity;
 import br.com.fullcycle.hexagonal.infrastructure.jpa.repositories.EventJpaRepository;
 import org.springframework.stereotype.Component;

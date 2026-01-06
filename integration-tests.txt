@@ -1,0 +1,35 @@
+Create Customer
+
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query":"mutation { createCustomer(input: { name: \"john\", cpf: \"123.456.789-00\", email: \"john@gmail.com\" }) { id } }"}' \
+  http://localhost:8080/graphql
+
+Get Customer by ID
+
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query": "query { customerOfId(id: \"cbf4b763-dc0b-427d-ba31-bf593989c2f6\") { name } }"}' \
+  http://localhost:8080/graphql
+
+Create Partner
+
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query":"mutation { createPartner(input: { name: \"john\", cnpj: \"12.456.789/0001-00\", email: \"john@gmail.com\" }) { id } }"}' \
+  http://localhost:8080/graphql
+
+Get Partner by ID
+
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query": "query { partnerOfId(id: \"8e3acb70-6ec5-4f9b-a30f-bd642f86861b\") { name } }"}' \
+  http://localhost:8080/graphql
+
+Create Event
+
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query":"mutation { createEvent(input: { name: \"Disney Christmas\", date: \"2025-12-23\", totalSpots: 1, partnerId: \"8e3acb70-6ec5-4f9b-a30f-bd642f86861b\" }) { id } }"}' \
+  http://localhost:8080/graphql
+
+Subscribe Customer to Event
+
+curl -X POST -H "Content-Type: application/json" \
+  --data '{"query":"mutation { subscribeCustomerToEvent(input: { customerId: \"cbf4b763-dc0b-427d-ba31-bf593989c2f6\", eventId: \"990d6482-47b1-4945-aa1e-8000989211ae\" }) { eventId } }"}' \
+  http://localhost:8080/graphql

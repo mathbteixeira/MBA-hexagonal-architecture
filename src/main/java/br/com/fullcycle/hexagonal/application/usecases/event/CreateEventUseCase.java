@@ -24,15 +24,15 @@ public class CreateEventUseCase extends UseCase<CreateEventUseCase.Input, Create
         final var aPartner = partnerRepository.partnerOfId(PartnerId.with(input.partnerId))
                 .orElseThrow(() -> new ValidationException("Partner not found"));
 
-        final var anEvent =
-                Event.newEvent(input.name, input.date, input.totalSpots, aPartner);
+        Event createdEvent =
+                eventRepository.create(Event.newEvent(input.name, input.date, input.totalSpots, aPartner));
 
         return new Output(
-                anEvent.eventId().value(),
+                createdEvent.eventId().value(),
                 input.date,
-                anEvent.name().value(),
-                anEvent.totalSpots(),
-                anEvent.partnerId().value());
+                createdEvent.name().value(),
+                createdEvent.totalSpots(),
+                createdEvent.partnerId().value());
     }
 
     public record Input(String date, String name, String partnerId, Integer totalSpots) {}
