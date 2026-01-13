@@ -1,17 +1,9 @@
-<<<<<<<< Updated upstream:infrastructure/src/test/java/br/com/fullcycle/controllers/PartnerControllerTest.java
-package br.com.fullcycle.hexagonal.controllers;
-
-import br.com.fullcycle.hexagonal.dtos.PartnerDTO;
-import br.com.fullcycle.hexagonal.repositories.PartnerRepository;
-========
 package br.com.fullcycle.infrastructure.rest;
 
-import br.com.fullcycle.domain.event.EventRepository;
+import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
 import br.com.fullcycle.domain.partner.PartnerRepository;
 import br.com.fullcycle.application.partner.CreatePartnerUseCase;
-import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
 import br.com.fullcycle.infrastructure.dtos.NewPartnerDTO;
->>>>>>>> Stashed changes:infrastructure/src/test/java/br/com/fullcycle/infrastructure/rest/PartnerControllerTest.java
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +29,8 @@ public class PartnerControllerTest {
     @Autowired
     private PartnerRepository partnerRepository;
 
-    @AfterEach
-    void tearDown() {
+    @BeforeEach
+    void setUP() {
         partnerRepository.deleteAll();
     }
 
@@ -46,10 +38,7 @@ public class PartnerControllerTest {
     @DisplayName("Deve criar um parceiro")
     public void testCreate() throws Exception {
 
-        var partner = new PartnerDTO();
-        partner.setCnpj("41536538000100");
-        partner.setEmail("john.doe@gmail.com");
-        partner.setName("John Doe");
+        var partner = new NewPartnerDTO("41.536.538/0001-00", "john.doe@gmail.com", "John Doe");
 
         final var result = this.mvc.perform(
                         MockMvcRequestBuilders.post("/partners")
@@ -58,23 +47,20 @@ public class PartnerControllerTest {
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.header().exists("Location"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString())
                 .andReturn().getResponse().getContentAsByteArray();
 
-        var actualResponse = mapper.readValue(result, PartnerDTO.class);
-        Assertions.assertEquals(partner.getName(), actualResponse.getName());
-        Assertions.assertEquals(partner.getCnpj(), actualResponse.getCnpj());
-        Assertions.assertEquals(partner.getEmail(), actualResponse.getEmail());
+        var actualResponse = mapper.readValue(result, NewPartnerDTO.class);
+        Assertions.assertEquals(partner.name(), actualResponse.name());
+        Assertions.assertEquals(partner.cnpj(), actualResponse.cnpj());
+        Assertions.assertEquals(partner.email(), actualResponse.email());
     }
 
     @Test
     @DisplayName("Não deve cadastrar um parceiro com CNPJ duplicado")
     public void testCreateWithDuplicatedCPFShouldFail() throws Exception {
 
-        var partner = new PartnerDTO();
-        partner.setCnpj("41536538000100");
-        partner.setEmail("john.doe@gmail.com");
-        partner.setName("John Doe");
+        var partner = new NewPartnerDTO("41.536.538/0001-00", "john.doe@gmail.com", "John Doe");
 
         // Cria o primeiro parceiro
         this.mvc.perform(
@@ -84,10 +70,10 @@ public class PartnerControllerTest {
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.header().exists("Location"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString())
                 .andReturn().getResponse().getContentAsByteArray();
 
-        partner.setEmail("john2@gmail.com");
+        partner = new NewPartnerDTO("41.536.538/0001-00", "john2@gmail.com", "John Doe");
 
         // Tenta criar o segundo parceiro com o mesmo CPF
         this.mvc.perform(
@@ -103,10 +89,7 @@ public class PartnerControllerTest {
     @DisplayName("Não deve cadastrar um parceiro com e-mail duplicado")
     public void testCreateWithDuplicatedEmailShouldFail() throws Exception {
 
-        var partner = new PartnerDTO();
-        partner.setCnpj("41536538000100");
-        partner.setEmail("john.doe@gmail.com");
-        partner.setName("John Doe");
+        var partner = new NewPartnerDTO("41.536.538/0001-00", "john.doe@gmail.com", "John Doe");
 
         // Cria o primeiro parceiro
         this.mvc.perform(
@@ -116,10 +99,10 @@ public class PartnerControllerTest {
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.header().exists("Location"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString())
                 .andReturn().getResponse().getContentAsByteArray();
 
-        partner.setCnpj("66666538000100");
+        partner = new NewPartnerDTO("66.666.538/0001-00", "john.doe@gmail.com", "John Doe");
 
         // Tenta criar o segundo parceiro com o mesmo CNPJ
         this.mvc.perform(
@@ -135,10 +118,7 @@ public class PartnerControllerTest {
     @DisplayName("Deve obter um parceiro por id")
     public void testGet() throws Exception {
 
-        var partner = new PartnerDTO();
-        partner.setCnpj("41536538000100");
-        partner.setEmail("john.doe@gmail.com");
-        partner.setName("John Doe");
+        var partner = new NewPartnerDTO("41.536.538/0001-00", "john.doe@gmail.com", "John Doe");
 
         final var createResult = this.mvc.perform(
                         MockMvcRequestBuilders.post("/partners")
@@ -147,7 +127,7 @@ public class PartnerControllerTest {
                 )
                 .andReturn().getResponse().getContentAsByteArray();
 
-        var partnerId = mapper.readValue(createResult, PartnerDTO.class).getId();
+        var partnerId = mapper.readValue(createResult, CreatePartnerUseCase.Output.class).id();
 
         final var result = this.mvc.perform(
                         MockMvcRequestBuilders.get("/partners/{id}", partnerId)
@@ -155,10 +135,10 @@ public class PartnerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsByteArray();
 
-        var actualResponse = mapper.readValue(result, PartnerDTO.class);
-        Assertions.assertEquals(partnerId, actualResponse.getId());
-        Assertions.assertEquals(partner.getName(), actualResponse.getName());
-        Assertions.assertEquals(partner.getCnpj(), actualResponse.getCnpj());
-        Assertions.assertEquals(partner.getEmail(), actualResponse.getEmail());
+        var actualResponse = mapper.readValue(result, GetPartnerByIDUseCase.Output.class);
+        Assertions.assertEquals(partnerId, actualResponse.id());
+        Assertions.assertEquals(partner.name(), actualResponse.name());
+        Assertions.assertEquals(partner.cnpj(), actualResponse.cnpj());
+        Assertions.assertEquals(partner.email(), actualResponse.email());
     }
 }

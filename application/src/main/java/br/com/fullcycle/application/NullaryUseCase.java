@@ -6,4 +6,12 @@ public abstract class NullaryUseCase<OUTPUT> {
     //2. O caso de uso implementa o padrão Command.
 
     public abstract OUTPUT execute();
+
+    public <T> T execute(Presenter<OUTPUT, T> presenter) {;
+        try {
+            return presenter.present(execute());
+        } catch (Throwable throwable) {
+            return presenter.present(throwable);
+        }
+    }
 }

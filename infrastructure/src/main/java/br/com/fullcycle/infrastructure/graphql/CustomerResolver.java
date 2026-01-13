@@ -1,7 +1,7 @@
 package br.com.fullcycle.infrastructure.graphql;
 
 import br.com.fullcycle.application.customer.CreateCustomerUseCase;
-import br.com.fullcycle.application.customer.GetCustomerByIDUseCase;
+import br.com.fullcycle.application.customer.GetCustomerByIdUseCase;
 import br.com.fullcycle.infrastructure.dtos.NewCustomerDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,10 +15,10 @@ import java.util.Objects;
 public class CustomerResolver {
 
     private final CreateCustomerUseCase createCustomerUseCase;
-    private final GetCustomerByIDUseCase getCustomerByIDUseCase;
+    private final GetCustomerByIdUseCase getCustomerByIDUseCase;
 
     public CustomerResolver(final CreateCustomerUseCase createCustomerUseCase,
-                              final GetCustomerByIDUseCase getCustomerByIDUseCase) {
+                              final GetCustomerByIdUseCase getCustomerByIDUseCase) {
         this.createCustomerUseCase = Objects.requireNonNull(createCustomerUseCase);
         this.getCustomerByIDUseCase = Objects.requireNonNull(getCustomerByIDUseCase);
     }
@@ -30,8 +30,8 @@ public class CustomerResolver {
     }
 
     @QueryMapping
-    public GetCustomerByIDUseCase.Output customerOfId(@Argument String id) {
-        return getCustomerByIDUseCase.execute(new GetCustomerByIDUseCase.Input(id))
+    public GetCustomerByIdUseCase.Output customerOfId(@Argument String id) {
+        return getCustomerByIDUseCase.execute(new GetCustomerByIdUseCase.Input(id))
                 .orElse(null);
     }
 }

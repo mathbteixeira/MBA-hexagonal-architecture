@@ -6,7 +6,7 @@ import br.com.fullcycle.domain.event.EventRepository;
 import br.com.fullcycle.domain.partner.PartnerRepository;
 import br.com.fullcycle.domain.event.ticket.TicketRepository;
 import br.com.fullcycle.application.customer.CreateCustomerUseCase;
-import br.com.fullcycle.application.customer.GetCustomerByIDUseCase;
+import br.com.fullcycle.application.customer.GetCustomerByIdUseCase;
 import br.com.fullcycle.application.event.CreateEventUseCase;
 import br.com.fullcycle.application.partner.CreatePartnerUseCase;
 import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
@@ -50,8 +50,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetCustomerByIDUseCase getCustomerUseCase() {
-        return new GetCustomerByIDUseCase(customerRepository);
+    public GetCustomerByIdUseCase getCustomerUseCase() {
+        return new GetCustomerByIdUseCase(customerRepository);
     }
 
     @Bean

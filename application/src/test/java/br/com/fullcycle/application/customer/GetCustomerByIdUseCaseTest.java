@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-class GetCustomerByIDUseCaseTest {
+class GetCustomerByIdUseCaseTest {
 
     @Test
     @DisplayName("Deve obter um ciente por id")
@@ -25,10 +25,10 @@ class GetCustomerByIDUseCaseTest {
 
         final String expectedId = aCustomer.customerId().value().toString();
 
-        final var input = new GetCustomerByIDUseCase.Input(expectedId);
+        final var input = new GetCustomerByIdUseCase.Input(expectedId);
 
         //when
-        final var useCase = new GetCustomerByIDUseCase(customerRepository);
+        final var useCase = new GetCustomerByIdUseCase(customerRepository);
         final var output = useCase.execute(input).get();
 
         //then
@@ -46,10 +46,10 @@ class GetCustomerByIDUseCaseTest {
 
         final var customerRepository = new InMemoryCustomerRepository();
 
-        final var input = new GetCustomerByIDUseCase.Input(expectedId);
+        final var input = new GetCustomerByIdUseCase.Input(expectedId);
 
         //when
-        final var useCase = new GetCustomerByIDUseCase(customerRepository);
+        final var useCase = new GetCustomerByIdUseCase(customerRepository);
         final var output = useCase.execute(input);
 
         //then

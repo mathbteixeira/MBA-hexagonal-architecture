@@ -7,11 +7,11 @@ import br.com.fullcycle.domain.customer.CustomerRepository;
 import java.util.Objects;
 import java.util.Optional;
 
-public class GetCustomerByIDUseCase extends UseCase<GetCustomerByIDUseCase.Input, Optional<GetCustomerByIDUseCase.Output>> {
+public class GetCustomerByIdUseCase extends UseCase<GetCustomerByIdUseCase.Input, Optional<GetCustomerByIdUseCase.Output>> {
 
     private final CustomerRepository customerRepository;
 
-    public GetCustomerByIDUseCase(final CustomerRepository customerRepository) {
+    public GetCustomerByIdUseCase(final CustomerRepository customerRepository) {
         this.customerRepository = Objects.requireNonNull(customerRepository);
     }
 

@@ -1,7 +1,7 @@
 package br.com.fullcycle.application;
 
 import br.com.fullcycle.IntegrationTest;
-import br.com.fullcycle.application.customer.GetCustomerByIDUseCase;
+import br.com.fullcycle.application.customer.GetCustomerByIdUseCase;
 import br.com.fullcycle.domain.customer.Customer;
 import br.com.fullcycle.domain.customer.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-class GetCustomerByIDUseCaseIT extends IntegrationTest {
+class GetCustomerByIdUseCaseIT extends IntegrationTest {
 
     @Autowired
-    private GetCustomerByIDUseCase useCase;
+    private GetCustomerByIdUseCase useCase;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -35,7 +35,7 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
         var customer = createCustomer(expectedCPF, expectedEmail, expectedName);
         final var expectedId = customer.customerId().value();
 
-        final var input = new GetCustomerByIDUseCase.Input(String.valueOf(expectedId));
+        final var input = new GetCustomerByIdUseCase.Input(String.valueOf(expectedId));
 
         //when
         final var output = useCase.execute(input).get();
@@ -53,7 +53,7 @@ class GetCustomerByIDUseCaseIT extends IntegrationTest {
         //given
         final var expectedId = UUID.randomUUID().toString();
 
-        final var input = new GetCustomerByIDUseCase.Input(expectedId);
+        final var input = new GetCustomerByIdUseCase.Input(expectedId);
 
         //when
         final var output = useCase.execute(input);
