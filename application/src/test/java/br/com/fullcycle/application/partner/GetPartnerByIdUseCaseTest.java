@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-class GetPartnerByIDUseCaseTest {
+class GetPartnerByIdUseCaseTest {
 
     @Test
     @DisplayName("Deve obter um parceiro por id")
@@ -24,10 +24,10 @@ class GetPartnerByIDUseCaseTest {
         partnerRepository.create(aPartner);
 
         final var expectedId = aPartner.partnerId().value();
-        final var input = new GetPartnerByIDUseCase.Input(expectedId);
+        final var input = new GetPartnerByIdUseCase.Input(expectedId);
 
         //when
-        final var useCase = new GetPartnerByIDUseCase(partnerRepository);
+        final var useCase = new GetPartnerByIdUseCase(partnerRepository);
         final var output = useCase.execute(input).get();
 
         //then
@@ -43,12 +43,12 @@ class GetPartnerByIDUseCaseTest {
         //given
         final var expectedId = UUID.randomUUID().toString();
 
-        final var input = new GetPartnerByIDUseCase.Input(expectedId);
+        final var input = new GetPartnerByIdUseCase.Input(expectedId);
 
         final var partnerRepository = new InMemoryPartnerRepository();
 
         //when
-        final var useCase = new GetPartnerByIDUseCase(partnerRepository);
+        final var useCase = new GetPartnerByIdUseCase(partnerRepository);
         final var output = useCase.execute(input);
 
         //then

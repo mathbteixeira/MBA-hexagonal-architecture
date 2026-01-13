@@ -1,7 +1,7 @@
 package br.com.fullcycle.infrastructure.graphql;
 
 import br.com.fullcycle.application.partner.CreatePartnerUseCase;
-import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
+import br.com.fullcycle.application.partner.GetPartnerByIdUseCase;
 import br.com.fullcycle.infrastructure.dtos.NewPartnerDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,10 +15,10 @@ import java.util.Objects;
 public class PartnerResolver {
 
     private final CreatePartnerUseCase createPartnerUseCase;
-    private final GetPartnerByIDUseCase getPartnerByIDUseCase;
+    private final GetPartnerByIdUseCase getPartnerByIDUseCase;
 
     public PartnerResolver(final CreatePartnerUseCase createPartnerUseCase,
-                             final GetPartnerByIDUseCase getPartnerByIDUseCase) {
+                             final GetPartnerByIdUseCase getPartnerByIDUseCase) {
         this.createPartnerUseCase = Objects.requireNonNull(createPartnerUseCase);
         this.getPartnerByIDUseCase = Objects.requireNonNull(getPartnerByIDUseCase);
     }
@@ -30,8 +30,8 @@ public class PartnerResolver {
     }
 
     @QueryMapping
-    public GetPartnerByIDUseCase.Output partnerOfId(@Argument String id) {
-        return getPartnerByIDUseCase.execute(new GetPartnerByIDUseCase.Input(id))
+    public GetPartnerByIdUseCase.Output partnerOfId(@Argument String id) {
+        return getPartnerByIDUseCase.execute(new GetPartnerByIdUseCase.Input(id))
                 .orElse(null);
     }
 }

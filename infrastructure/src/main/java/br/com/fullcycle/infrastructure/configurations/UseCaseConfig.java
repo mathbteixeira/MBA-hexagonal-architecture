@@ -9,7 +9,7 @@ import br.com.fullcycle.application.customer.CreateCustomerUseCase;
 import br.com.fullcycle.application.customer.GetCustomerByIdUseCase;
 import br.com.fullcycle.application.event.CreateEventUseCase;
 import br.com.fullcycle.application.partner.CreatePartnerUseCase;
-import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
+import br.com.fullcycle.application.partner.GetPartnerByIdUseCase;
 import br.com.fullcycle.application.event.SubscribeCustomerToEventUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,8 +55,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetPartnerByIDUseCase getPartnerUseCase() {
-        return new GetPartnerByIDUseCase(partnerRepository);
+    public GetPartnerByIdUseCase getPartnerUseCase() {
+        return new GetPartnerByIdUseCase(partnerRepository);
     }
 
     @Bean

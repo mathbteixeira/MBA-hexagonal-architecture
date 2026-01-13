@@ -1,6 +1,6 @@
 package br.com.fullcycle.infrastructure.rest;
 
-import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
+import br.com.fullcycle.application.partner.GetPartnerByIdUseCase;
 import br.com.fullcycle.domain.partner.PartnerRepository;
 import br.com.fullcycle.application.partner.CreatePartnerUseCase;
 import br.com.fullcycle.infrastructure.dtos.NewPartnerDTO;
@@ -135,7 +135,7 @@ public class PartnerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsByteArray();
 
-        var actualResponse = mapper.readValue(result, GetPartnerByIDUseCase.Output.class);
+        var actualResponse = mapper.readValue(result, GetPartnerByIdUseCase.Output.class);
         Assertions.assertEquals(partnerId, actualResponse.id());
         Assertions.assertEquals(partner.name(), actualResponse.name());
         Assertions.assertEquals(partner.cnpj(), actualResponse.cnpj());

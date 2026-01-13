@@ -2,7 +2,7 @@ package br.com.fullcycle.infrastructure.rest;
 
 import br.com.fullcycle.domain.exceptions.ValidationException;
 import br.com.fullcycle.application.partner.CreatePartnerUseCase;
-import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
+import br.com.fullcycle.application.partner.GetPartnerByIdUseCase;
 import br.com.fullcycle.infrastructure.dtos.NewPartnerDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import java.util.Objects;
 public class PartnerController {
 
     private final CreatePartnerUseCase createPartnerUseCase;
-    private final GetPartnerByIDUseCase getPartnerByIDUseCase;
+    private final GetPartnerByIdUseCase getPartnerByIDUseCase;
 
     public PartnerController(final CreatePartnerUseCase createPartnerUseCase,
-                             final GetPartnerByIDUseCase getPartnerByIDUseCase) {
+                             final GetPartnerByIdUseCase getPartnerByIDUseCase) {
         this.createPartnerUseCase = Objects.requireNonNull(createPartnerUseCase);
         this.getPartnerByIDUseCase = Objects.requireNonNull(getPartnerByIDUseCase);
     }
@@ -38,7 +38,7 @@ public class PartnerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable String id) {
-        return getPartnerByIDUseCase.execute(new GetPartnerByIDUseCase.Input(id))
+        return getPartnerByIDUseCase.execute(new GetPartnerByIdUseCase.Input(id))
                 .map(ResponseEntity::ok)
                 .orElseGet(ResponseEntity.notFound()::build);
     }

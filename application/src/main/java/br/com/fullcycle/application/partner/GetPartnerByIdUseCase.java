@@ -7,18 +7,18 @@ import br.com.fullcycle.domain.partner.PartnerRepository;
 import java.util.Objects;
 import java.util.Optional;
 
-public class GetPartnerByIDUseCase extends UseCase<GetPartnerByIDUseCase.Input, Optional<GetPartnerByIDUseCase.Output>> {
+public class GetPartnerByIdUseCase extends UseCase<GetPartnerByIdUseCase.Input, Optional<GetPartnerByIdUseCase.Output>> {
 
     private final PartnerRepository partnerRepository;
 
-    public GetPartnerByIDUseCase(final PartnerRepository partnerRepository) {
+    public GetPartnerByIdUseCase(final PartnerRepository partnerRepository) {
         this.partnerRepository = Objects.requireNonNull(partnerRepository);
     }
 
     @Override
-    public Optional<GetPartnerByIDUseCase.Output> execute(final GetPartnerByIDUseCase.Input input) {
+    public Optional<GetPartnerByIdUseCase.Output> execute(final GetPartnerByIdUseCase.Input input) {
         return partnerRepository.partnerOfId(PartnerId.with(input.id))
-                .map(p -> new GetPartnerByIDUseCase.Output(
+                .map(p -> new GetPartnerByIdUseCase.Output(
                         p.partnerId().value(),
                         p.cnpj().value(),
                         p.email().value(),

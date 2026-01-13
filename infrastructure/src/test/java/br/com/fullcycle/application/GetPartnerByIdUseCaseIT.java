@@ -1,7 +1,7 @@
 package br.com.fullcycle.application;
 
 import br.com.fullcycle.IntegrationTest;
-import br.com.fullcycle.application.partner.GetPartnerByIDUseCase;
+import br.com.fullcycle.application.partner.GetPartnerByIdUseCase;
 import br.com.fullcycle.domain.partner.Partner;
 import br.com.fullcycle.domain.event.EventRepository;
 import br.com.fullcycle.domain.partner.PartnerRepository;
@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-class GetPartnerByIDUseCaseIT extends IntegrationTest {
+class GetPartnerByIdUseCaseIT extends IntegrationTest {
 
     @Autowired
-    private GetPartnerByIDUseCase useCase;
+    private GetPartnerByIdUseCase useCase;
 
     @Autowired
     private EventRepository eventRepository;
@@ -40,7 +40,7 @@ class GetPartnerByIDUseCaseIT extends IntegrationTest {
         var partner = createPartner(expectedCNPJ, expectedEmail, expectedName);
         final var expectedId = partner.partnerId().value();
 
-        final var input = new GetPartnerByIDUseCase.Input(expectedId);
+        final var input = new GetPartnerByIdUseCase.Input(expectedId);
 
         //when
         final var output = useCase.execute(input).get();
@@ -58,7 +58,7 @@ class GetPartnerByIDUseCaseIT extends IntegrationTest {
         //given
         final var expectedId = UUID.randomUUID().toString();
 
-        final var input = new GetPartnerByIDUseCase.Input(expectedId);
+        final var input = new GetPartnerByIdUseCase.Input(expectedId);
 
         //when
         final var output = useCase.execute(input);
