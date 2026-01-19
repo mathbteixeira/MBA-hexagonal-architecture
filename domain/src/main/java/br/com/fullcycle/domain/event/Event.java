@@ -1,7 +1,8 @@
 package br.com.fullcycle.domain.event;
 
+import br.com.fullcycle.domain.DomainEvent;
+import br.com.fullcycle.domain.event.ticket.EventTicketReserved;
 import br.com.fullcycle.domain.person.Name;
-import br.com.fullcycle.domain.event.ticket.Ticket;
 import br.com.fullcycle.domain.customer.CustomerId;
 import br.com.fullcycle.domain.partner.Partner;
 import br.com.fullcycle.domain.partner.PartnerId;
@@ -15,11 +16,12 @@ public class Event {
 
     private static final int ONE = 1;
     private final EventId eventId;
+    private final Set<EventTicket> tickets;
+    private final Set<DomainEvent> domainEvents;
     private Name name;
     private LocalDate date;
     private int totalSpots;
     private PartnerId partnerId;
-    private Set<EventTicket> tickets;
 
     public Event(final EventId eventId, final Set<EventTicket> tickets) {
         if (eventId == null) {
@@ -28,6 +30,7 @@ public class Event {
 
         this.eventId = eventId;
         this.tickets = tickets != null ? tickets : new HashSet<>();
+        this.domainEvents = new HashSet<>(2);
     }
 
     public Event(
@@ -64,7 +67,7 @@ public class Event {
         );
     }
 
-    public Ticket reserveTicket(final CustomerId customerId) {
+    public EventTicket reserveTicket(final CustomerId customerId) {
         this.allTickets().stream()
                 .filter(it -> Objects.equals(it.customerId(), customerId))
                 .findFirst().ifPresent(it -> {
@@ -74,11 +77,10 @@ public class Event {
             throw new ValidationException("Event sold out");
         }
 
-        final var newTicket = Ticket.newTicket(customerId, this.eventId());
-
-        this.tickets.add(new EventTicket(newTicket.ticketId(), this.eventId(), customerId, this.tickets.size() + ONE));
-
-        return newTicket;
+        final EventTicket aTicket = EventTicket.newTicket(eventId(), customerId, this.tickets.size() + ONE);
+        this.tickets.add(aTicket);
+        this.domainEvents.add(new EventTicketReserved(aTicket.eventTicketId(), eventId(), customerId));
+        return aTicket;
     }
 
     public EventId eventId() {
@@ -103,6 +105,10 @@ public class Event {
 
     public Set<EventTicket> allTickets() {
         return Collections.unmodifiableSet(tickets);
+    }
+
+    public Set<DomainEvent> allDomainEvents() {
+        return Collections.unmodifiableSet(domainEvents);
     }
 
     @Override

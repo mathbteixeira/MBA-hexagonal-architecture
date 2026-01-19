@@ -108,17 +108,16 @@ public class EventTest {
         final var expectedTicketOrder = 1;
         final var actualEvent = Event.newEvent(expectedName, expectedDate, expectedTotalSpots, aPartner);
         final var expectedEventId = actualEvent.eventId();
+        final var expectedDomainEventType = "event-ticket.reserved";
 
         //when
         final var actualTicket = actualEvent.reserveTicket(expectedCustomerId);
 
         //then
-        Assertions.assertNotNull(actualTicket.ticketId());
-        Assertions.assertNotNull(actualTicket.reservedAt());
-        Assertions.assertNull(actualTicket.paidAt());
+        Assertions.assertNotNull(actualTicket.eventTicketId());
+        Assertions.assertNull(actualTicket.ticketId());
         Assertions.assertEquals(expectedEventId, actualTicket.eventId());
         Assertions.assertEquals(expectedCustomerId, actualTicket.customerId());
-        Assertions.assertEquals(TicketStatus.PENDING, actualTicket.ticketStatus());
 
         Assertions.assertEquals(expectedDate, actualEvent.date().format(DateTimeFormatter.ISO_LOCAL_DATE));
         Assertions.assertEquals(expectedName, actualEvent.name().value());
@@ -131,6 +130,9 @@ public class EventTest {
         Assertions.assertEquals(expectedEventId, actualEventTicket.eventId());
         Assertions.assertEquals(expectedCustomerId, actualEventTicket.customerId());
         Assertions.assertEquals(actualTicket.ticketId(), actualEventTicket.ticketId());
+
+        final var actualDomainEvents = actualEvent.allDomainEvents().iterator().next();
+        Assertions.assertEquals(expectedDomainEventType, actualDomainEvents.type());
     }
 
     @Test

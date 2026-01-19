@@ -36,20 +36,17 @@ class SubscribeCustomerToEventUseCaseTest {
 
         final var customerRepository = new InMemoryCustomerRepository();
         final var eventRepository = new InMemoryEventRepository();
-        final var ticketRepository = new InMemoryTicketRepository();
 
         customerRepository.create(aCustomer);
         eventRepository.create(anEvent);
 
         //when
-        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository, ticketRepository);
+        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository);
         final var output = useCase.execute(subscribeInput);
 
         //then
         Assertions.assertEquals(eventId, output.eventId());
-        Assertions.assertNotNull(output.ticketId());
         Assertions.assertNotNull(output.reservationDate());
-        Assertions.assertEquals(TicketStatus.PENDING.name(), output.ticketStatus());
 
         final var actualEvent = eventRepository.eventOfId(anEvent.eventId());
         Assertions.assertEquals(expectedTicketsSize, actualEvent.get().allTickets().size());
@@ -69,12 +66,11 @@ class SubscribeCustomerToEventUseCaseTest {
 
         final var customerRepository = new InMemoryCustomerRepository();
         final var eventRepository = new InMemoryEventRepository();
-        final var ticketRepository = new InMemoryTicketRepository();
 
         customerRepository.create(aCustomer);
 
         //when
-        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository, ticketRepository);
+        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository);
         final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
 
         //then
@@ -98,12 +94,11 @@ class SubscribeCustomerToEventUseCaseTest {
 
         final var customerRepository = new InMemoryCustomerRepository();
         final var eventRepository = new InMemoryEventRepository();
-        final var ticketRepository = new InMemoryTicketRepository();
 
         eventRepository.create(anEvent);
 
         //when
-        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository, ticketRepository);
+        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository);
         final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
 
         //then
@@ -130,14 +125,13 @@ class SubscribeCustomerToEventUseCaseTest {
         final var eventRepository = new InMemoryEventRepository();
         final var ticketRepository = new InMemoryTicketRepository();
 
-        final Ticket aTicket = anEvent.reserveTicket(aCustomer.customerId());
+        anEvent.reserveTicket(aCustomer.customerId());
 
         customerRepository.create(aCustomer);
         eventRepository.create(anEvent);
-        ticketRepository.create(aTicket);
 
         //when
-        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository, ticketRepository);
+        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository);
         final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
 
         //then
@@ -164,15 +158,14 @@ class SubscribeCustomerToEventUseCaseTest {
         final var eventRepository = new InMemoryEventRepository();
         final var ticketRepository = new InMemoryTicketRepository();
 
-        final var aTicket = anEvent.reserveTicket(aCustomer2.customerId());
+        anEvent.reserveTicket(aCustomer2.customerId());
 
         customerRepository.create(aCustomer);
         customerRepository.create(aCustomer2);
         eventRepository.create(anEvent);
-        ticketRepository.create(aTicket);
 
         //when
-        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository, ticketRepository);
+        final var useCase = new SubscribeCustomerToEventUseCase(customerRepository, eventRepository);
         final var actualException = assertThrows(ValidationException.class, () -> useCase.execute(subscribeInput));
 
         //then
